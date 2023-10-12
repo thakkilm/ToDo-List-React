@@ -1,5 +1,5 @@
 export default function FirstComponent(){
     return(
-      <div calssName='FirstComponent'>FirstComponent</div>
+      <div className='FirstComponent'>FirstComponent</div>
     )
   }
