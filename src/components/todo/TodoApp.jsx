@@ -4,6 +4,8 @@ import './TodoApp.css'
 import LogoutComponent from './LogoutComponent';
 import FooterComponent from './FooterComponent';
 import HeaderComponent from './HeaderComponent';
+import ListTodosComponent from './ListTodosComponent';
+import ErrorComponent from './ErrorComponent';
 export default function TodoApp() {
 
     return (
@@ -97,59 +99,6 @@ function WelcomeComponent() {
     )
 }
 
-function ErrorComponent() {
-    return (
-        <>
-            <h1>We are working hard</h1>
-            <div>Apologies for the 404. Please check the url entered</div>
-        </>
-
-    )
-}
-function ListTodosComponent(){
-    const date=new Date()
-    const targetDate=new Date(date.getFullYear()+10,date.getMonth(),date.getDay())
-    const todos=[
-        {id:1, descrition:'Learn React', done:false, targetDate:targetDate},
-        {id:2, descrition:'Learn React', done:false, targetDate:targetDate},
-        {id:3, descrition:'Learn React', done:false, targetDate:targetDate}
-    ]
-    
-    return (
-
-        <div className='container'>
-            <h1>Things you want to do!</h1>
-            <div>
-                <table className='table'>
-                <thead>
-                    <tr>
-                        <td>id</td>
-                        <td>description</td>
-                        <td>Is Done?</td>
-                        <td>Target Date</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        todos.map(
-                            todo=>(
-                            <tr key={todo.id}>
-                            <td>{todo.id}</td>
-                            <td>{todo.descrition}</td>
-                            <td>{todo.done.toString()}</td>
-                            <td>{todo.targetDate.toDateString()}</td>
-
-                        </tr>
-                        )
-                        )
-                    }
-                  
-                </tbody>
-                </table>
-            </div>
-        </div>
-    )
-}
 
 
 
