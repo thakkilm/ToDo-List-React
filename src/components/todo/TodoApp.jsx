@@ -1,13 +1,28 @@
 import { useState } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate ,useParams,Link} from 'react-router-dom'
 import './TodoApp.css'
 export default function TodoApp() {
 
     return (
         <>
             <div className="TodoApp">
-                Todo Application
+                <HeaderComponent/>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path='/' element={<LoginComponent />}/>
+                        <Route path='/login' element={<LoginComponent />}/>
+
+                        <Route path='/welcome/:userName' element={<WelcomeComponent />}/>
+                        <Route path='/todos' element={<ListTodosComponent/>}/>
+                        <Route path='/logout' element={<LogoutComponent/>}/>
+                        <Route path="*" element={<ErrorComponent />}/>
+                    </Routes>
+
+                </BrowserRouter>
+                <FooterComponent/>
             </div>
-            <LoginComponent />
+
+
         </>
     );
 }
@@ -18,21 +33,22 @@ function LoginComponent() {
     const [successMessage, setSuccess] = useState(false)
 
     const [errorMessage, setError] = useState(false)
- 
-   
+    const navigate = useNavigate();
+
 
     function handleUsernameChange(event) {
         setUserName(event.target.value)
     }
     function handlePasswordChange(event) {
         setPassword(event.target.value)
-        console.log(event.target.value)
+
     }
 
     function setSuccessMessage() {
         if (userName === 'Mahesh' && password === 'dummy') {
             setSuccess(true)
             setError(false)
+            navigate(`/welcome/${userName}`)
         }
         else {
             setSuccess(false)
@@ -40,30 +56,14 @@ function LoginComponent() {
         }
     }
 
-    function ShowSuccessMessageComponent() {
-        if (successMessage) {
-            return (
-                <div className='successMessage'>Login is Successful</div>
-            )
-        }
-        else
-        return null
-    }
-    function ShowErrorMessage() {
-        if (errorMessage) {
-            return (
-                <div className='errorMessage'>Login is UnSuccessful. Please check your password</div>
-            )
-        }
-        else
-            return null
-    }
+
     return (
         <>
             <div className="loginForm">
-            
-                <ShowSuccessMessageComponent/>
-                <ShowErrorMessage/>
+                <h1>Time to Login</h1>
+                {successMessage && <div className='successMessage'>Login is Successful</div>}
+                {errorMessage && <div className='errorMessage'>Login is UnSuccessful. Please check your password</div>}
+             
                 <div>
                     <label >Username</label>
                     <input type="text" name="username" value={userName} onChange={handleUsernameChange} />
@@ -80,21 +80,98 @@ function LoginComponent() {
     )
 }
 
-// function showSuccessMessageComponent() {
-//     if (successMessage) {
-//         return (
-//             <div className='successMessage'>Login is Successful</div>
-//         )
-//     }
-//     else
-//     return null
-// }
-// function showErrorMessage() {
-//     if (errorMessage) {
-//         return (
-//             <div className='errorMessage'>Login is UnSuccessful. Please check your password</div>
-//         )
-//     }
-//     else
-//         return null
-// }
+function WelcomeComponent() {
+    const {userName}=useParams()
+    
+    return (
+        <>
+        <div className='welcomeComponent'>
+        <h1>Welcome to My App {userName}</h1>
+        <div >Manage Your todays <Link to='/todos'>Here</Link> </div>
+        </div>
+        </>
+    )
+}
+
+function ErrorComponent() {
+    return (
+        <>
+            <h1>We are working hard</h1>
+            <div>Apologies for the 404. Please check the url entered</div>
+        </>
+
+    )
+}
+function ListTodosComponent(){
+    const date=new Date()
+    const targetDate=new Date(date.getFullYear()+10,date.getMonth(),date.getDay())
+    const todos=[
+        {id:1, descrition:'Learn React', done:false, targetDate:targetDate},
+        {id:2, descrition:'Learn React', done:false, targetDate:targetDate},
+        {id:3, descrition:'Learn React', done:false, targetDate:targetDate}
+    ]
+    
+    return (
+
+        <div className='container'>
+            <h1>Things you want to do!</h1>
+            <div>
+                <table className='table'>
+                <thead>
+                    <tr>
+                        <td>id</td>
+                        <td>description</td>
+                        <td>Is Done?</td>
+                        <td>Target Date</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        todos.map(
+                            todo=>(
+                            <tr key={todo.id}>
+                            <td>{todo.id}</td>
+                            <td>{todo.descrition}</td>
+                            <td>{todo.done.toString()}</td>
+                            <td>{todo.targetDate.toDateString()}</td>
+
+                        </tr>
+                        )
+                        )
+                    }
+                  
+                </tbody>
+                </table>
+            </div>
+        </div>
+    )
+}
+
+
+function HeaderComponent(){
+    return(
+
+        <div className='headerComponent'>
+            Header <hr/>
+        </div>
+    )
+}
+
+function FooterComponent(){
+    return(
+
+        <div className='headerComponent'>
+          <hr/>   Footer
+        </div>
+    )
+}
+
+function LogoutComponent(){
+    return(
+
+        <div>
+            <h1>You Are Logged Out</h1>
+            <div>ThankYou for using our App</div>
+        </div>
+    )
+}
