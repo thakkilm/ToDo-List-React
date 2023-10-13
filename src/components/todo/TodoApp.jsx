@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route, useNavigate ,useParams,Link} from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import './TodoApp.css'
 import LogoutComponent from './LogoutComponent';
 import FooterComponent from './FooterComponent';
 import HeaderComponent from './HeaderComponent';
 import ListTodosComponent from './ListTodosComponent';
 import ErrorComponent from './ErrorComponent';
+import WelcomeComponent from './WelcomeComponent';
 export default function TodoApp() {
 
     return (
@@ -86,18 +87,6 @@ function LoginComponent() {
     )
 }
 
-function WelcomeComponent() {
-    const {userName}=useParams()
-    
-    return (
-        <>
-        <div className='welcomeComponent'>
-        <h1>Welcome to My App {userName}</h1>
-        <div >Manage Your todays <Link to='/todos'>Here</Link> </div>
-        </div>
-        </>
-    )
-}
 
 
 
