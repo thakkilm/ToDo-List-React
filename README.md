@@ -68,3 +68,10 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+My Notes:
+
+Used React for Developing the app
+Used UseContext to share the value across the App
+used BrowserRouter, Routes, Route and  navigate(`/welcome/${userName}`) method to navigate from one page to other
