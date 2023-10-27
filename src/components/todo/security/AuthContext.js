@@ -1,32 +1,61 @@
 import { createContext, useContext, useState } from "react";
+import { executeBasicAuthenticationService } from "../api/HelloWorldApiService";
+import { apiBase } from "../api/ApiClient";
 
 
-export const AuthContext=createContext();
-export const UseAuth=()=>useContext(AuthContext)
+export const AuthContext = createContext();
+export const UseAuth = () => useContext(AuthContext)
 
 
-export default function AuthProvider({children}){
-    const [isAuthenticated,setAuthentication]=useState(false)
-    const val={isAuthenticated,setAuthentication,login,logOut}
+export default function AuthProvider({ children }) {
+    const [isAuthenticated, setAuthentication] = useState(false)
+    const [username, setUsername] = useState(null)
+    const [token, setToken] = useState(null)
 
-    function login(password,username){
-        if (username === 'Mahesh' && password === 'dummy') {
-           setAuthentication(true)
-           return true
+    const val = { isAuthenticated, setAuthentication, login, logOut, username }
+
+
+    async function login(password, username) {
+
+        const baToken = 'Basic ' + window.btoa(username + ':' + password)
+        try {
+            const response = await executeBasicAuthenticationService(baToken)
+
+
+            if (response.status == 200) {
+                setAuthentication(true)
+                setToken(baToken)
+                apiBase.interceptors.request.use(
+                    (config) => {
+                        config.headers.Authorization = baToken
+                        return config
+                    }
+                )
+                setUsername(username)
+                return true
+            }
+            else {
+                logOut()
+
+                return false
+            }
         }
-        else {
-           setAuthentication(false)
-           return false
+        catch (error) {
+            logOut()
+
+            return false
         }
     }
-    function logOut(){
+    function logOut() {
+        setToken(null)
         setAuthentication(false)
-     }
-   
+        setUsername(null)
+    }
+
     // setInterval(()=>setNumber(number+1),10000)
-     return(
+    return (
         <AuthContext.Provider value={val}>
-        {children}
+            {children}
         </AuthContext.Provider>
     )
 }

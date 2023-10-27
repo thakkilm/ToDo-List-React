@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import {  useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { UseAuth } from './security/AuthContext';
 
 
 export default function LoginComponent() {
-    const authContext=UseAuth()
+    const authContext = UseAuth()
     const [userName, setUserName] = useState("Mahesh")
     const [password, setPassword] = useState('')
 
@@ -20,8 +20,8 @@ export default function LoginComponent() {
 
     }
 
-    function setSuccessMessage() {
-        if (authContext.login(password,userName)) {
+    async function setSuccessMessage() {
+        if (await authContext.login(password, userName)) {
             navigate(`/welcome/${userName}`)
             setError(false)
         }
@@ -35,9 +35,9 @@ export default function LoginComponent() {
         <>
             <div className="loginForm">
                 <h1>Time to Login</h1>
-              
+
                 {errorMessage && <div className='errorMessage'>Login is UnSuccessful. Please check your password</div>}
-             
+
                 <div>
                     <label >Username</label>
                     <input type="text" name="username" value={userName} onChange={handleUsernameChange} />
