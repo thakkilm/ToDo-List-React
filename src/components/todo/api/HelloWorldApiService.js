@@ -8,8 +8,3 @@ export const retrieveHellowWorldPathVariable = (username, token) => apiBase.get(
     }
 })
 
-export const executeBasicAuthenticationService = (token) => apiBase.get(`/basicauth`, {
-    headers: {
-        Authorization: token
-    }
-})
